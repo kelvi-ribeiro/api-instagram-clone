@@ -32,7 +32,7 @@ function query(db, data) {
     case 'inserir':
       collection.insertOne(data.dados, data.callback);
       break;
-    case 'pesquisar':
+    case 'pesquisar':          
       collection.find(data.dados).toArray(data.callback);
       break;
     case 'remover':
@@ -69,6 +69,22 @@ app.get('/api', function(req, res){
     var dados = {
       operacao: 'pesquisar',
       dados: null,
+      collection: 'postagens',
+      callback: function(err, records){
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(records);
+        }
+      }
+    }
+    connMongoDB(dados);
+  });
+
+  app.get('/api/:id', function(req, res){        
+    var dados = {
+      operacao: 'pesquisar',
+      dados: objectID(req.params.id),
       collection: 'postagens',
       callback: function(err, records){
         if (err) {
