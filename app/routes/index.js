@@ -13,4 +13,20 @@ module.exports = function(application){
 			}
 		})
 	});
+	application.post('/', function(req, res){
+		var dadosReq = req.body;
+		res.send(dadosReq);
+	/* 	res.format({
+			html:function(){
+			res.send('Bem vindo a sua app NodeJS!');
+
+			},
+			json:function(){
+				var retorno = {
+					body:'Bem vindo a sua app NodeJS!'
+				}
+				res.json(retorno);
+			}
+		}) */
+	});
 }
