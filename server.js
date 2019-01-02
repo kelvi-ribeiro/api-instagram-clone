@@ -64,3 +64,19 @@ app.post('/api', function(req, res){
   }
   connMongoDB(dados);
 });
+
+app.get('/api', function(req, res){    
+    var dados = {
+      operacao: 'pesquisar',
+      dados: null,
+      collection: 'postagens',
+      callback: function(err, records){
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(records);
+        }
+      }
+    }
+    connMongoDB(dados);
+  });
