@@ -34,5 +34,16 @@ consign()
 	.then('app/controllers')
 	.into(app);
 
+	/* middleware que configura as páginas de status */
+	app.use(function(req,res,next){
+		res.status(404).render('errors/404');
+		next();
+	});
+
+	app.use(function(err,req,res,next){
+		res.status(500).render('errors/500');
+		next();
+	});
+
 /* exportar o objeto app */
 module.exports = app;
