@@ -35,8 +35,7 @@ function query(db, data) {
     case 'pesquisar':          
       collection.find(data.dados).toArray(data.callback);
       break;
-    case 'remover':
-      data.where._id = objectID(data.where._id);
+    case 'remover':      
       collection.remove(data.where, data.callback);
       break;
   }
@@ -67,8 +66,7 @@ app.post('/api', function(req, res){
 
 app.get('/api', function(req, res){    
     var dados = {
-      operacao: 'pesquisar',
-      dados: null,
+      operacao: 'pesquisar',      
       collection: 'postagens',
       callback: function(err, records){
         if (err) {
@@ -100,10 +98,25 @@ app.get('/api', function(req, res){
   app.put('/api/:id', function(req, res){    
         
     var dados = {
-      operacao: 'atualizar',
-      dados: objectID(req.params.id),
+      operacao: 'atualizar',      
       where:{_id:objectID(req.params.id)},
       set:{$set:{titulo:req.body.titulo}},
+      collection: 'postagens',
+      callback: function(err, records){
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(records);
+        }
+      }
+    }
+    connMongoDB(dados);
+  });
+
+  app.delete('/api/:id', function(req, res){            
+    var dados = {
+      operacao: 'remover',      
+      where:{_id:objectID(req.params.id)},      
       collection: 'postagens',
       callback: function(err, records){
         if (err) {
