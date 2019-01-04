@@ -27,7 +27,7 @@ function query(db, data) {
   var collection = db.collection(data.collection);
   switch (data.operacao) {
     case 'atualizar':
-      collection.update(data.where, data.set);
+      collection.update(data.where, data.set,{},data.callback);
       break;
     case 'inserir':
       collection.insertOne(data.dados, data.callback);
@@ -85,6 +85,25 @@ app.get('/api', function(req, res){
     var dados = {
       operacao: 'pesquisar',
       dados: objectID(req.params.id),
+      collection: 'postagens',
+      callback: function(err, records){
+        if (err) {
+          res.json(err);
+        } else {
+          res.json(records);
+        }
+      }
+    }
+    connMongoDB(dados);
+  });
+
+  app.put('/api/:id', function(req, res){    
+        
+    var dados = {
+      operacao: 'atualizar',
+      dados: objectID(req.params.id),
+      where:{_id:objectID(req.params.id)},
+      set:{$set:{titulo:req.body.titulo}},
       collection: 'postagens',
       callback: function(err, records){
         if (err) {
