@@ -48,6 +48,7 @@ app.get('/', function(req, res){
 });
  
 app.post('/api', function(req, res){
+  res.setHeader("Access-Control-Allow-Origin","*")
   var data = req.body;
   var dados = {
     operacao: 'inserir',
