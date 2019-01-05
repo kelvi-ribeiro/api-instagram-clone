@@ -43,7 +43,7 @@
 					$('#container_form').show();
 				});
 
-				$('#btn-cancelar-publicacao').click(function(){
+				$('#btn-cancelar-publicacao').click(function(){					
 					$('#container_timeline').show();
 					$('#container_form').hide();
 					return false;
@@ -61,6 +61,9 @@
 					if(xhr.readyState === 4){
 						var response = xhr.responseText;
 						document.getElementById('mensagem').innerHTML = response;
+						$('#container_timeline').show();
+						$('#container_form').hide();
+						loadPostagens();
 					}
 				}
 				
