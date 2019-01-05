@@ -16,6 +16,27 @@
 
 		<script>
 			$(document).ready(function(){
+				 function loadPostagens (){
+					 var xhr = new XMLHttpRequest();
+					 xhr.open('GET','http://localhost:8080/api');
+					 xhr.onload = function(){
+						 if(xhr.status === 200){
+							 var postagens = $.parseJSON(xhr.responseText);
+							 postagens.forEach(postagem => {
+								 $('#container_timeline').append(
+								'<div class="publicacao">' + 
+									'<span class="titulo">' +  postagem.titulo + '</span>' +
+									'<img src="http://localhost:8080/uploads/' + postagem.urlImagem  + '/>"' +
+								'</div>'
+									
+								 );
+							 });
+						 }
+					 }
+					 xhr.send();
+				}
+
+				loadPostagens();
 
 				$('#btn_incluir').click(function(){
 					$('#container_timeline').hide();
