@@ -115,6 +115,18 @@ app.get('/api', function(req, res){
     connMongoDB(dados);
   });
 
+  app.get('/uploads/:urlImagem', function(req, res){        
+    var pathImagem = './uploads/' + req.params.urlImagem;
+    fs.readFile(pathImagem,function(err,content){
+        if(err){
+          res.status(400).json(err);
+          return;
+        }
+        res.writeHead(200,{'content-type':'image/jpg'});
+        res.end(content);
+      });
+  });
+
   app.put('/api/:id', function(req, res){    
         
     var dados = {
