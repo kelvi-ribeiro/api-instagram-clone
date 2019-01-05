@@ -2,7 +2,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     multiParty = require('connect-multiparty'),
     mongodb = require('mongodb').MongoClient,
-    objectID = require('mongodb').ObjectId;
+    objectID = require('mongodb').ObjectId,
+    fs = require('fs');
  
 var app = express();
  
@@ -50,21 +51,36 @@ app.get('/', function(req, res){
 });
  
 app.post('/api', function(req, res){
-  res.setHeader("Access-Control-Allow-Origin","*")
-  var data = req.body;
-  var dados = {
-    operacao: 'inserir',
-    dados: data,
-    collection: 'postagens',
-    callback: function(err, records){
-      if (err) {
-        res.json(err);
-      } else {
-        res.json(records);
+  res.setHeader("Access-Control-Allow-Origin","*");
+  var date = new Date();
+  var timeStamp = date.getTime();
+  
+  var urlImagem = timeStamp + '_' + req.files.arquivo.originalFilename; 
+  var pathOrigem = req.files.arquivo.path;
+  var pathDestino = './uploads/' + urlImagem; 
+  fs.rename(pathOrigem,pathDestino,function(err){
+    if(err){
+      res.status(500).json(err);
+      return;
+    }
+    var dadosToPersist = {
+      urlImagem:urlImagem,
+      titulo:req.body.titulo
+    }
+    var dados = {
+      operacao: 'inserir',
+      dados: dadosToPersist,
+      collection: 'postagens',
+      callback: function(err, records){
+        if (err) {
+          res.json({'status':'Erro ao postar sua foto'});
+        } else {
+          res.json({'status':'Sucesso ao postar sua foto'});
+        }
       }
     }
-  }
-  connMongoDB(dados);
+    connMongoDB(dados);
+    });
 });
 
 app.get('/api', function(req, res){    
