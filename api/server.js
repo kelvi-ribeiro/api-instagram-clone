@@ -158,11 +158,15 @@ app.get('/api', function(req, res){
     connMongoDB(dados);
   });
 
-  app.delete('/api/:id', function(req, res){    
-    res.send(req.params.id)
-    /* var dados = {
-      operacao: 'remover',      
-      where:{_id:objectID(req.params.id)},      
+  app.delete('/api/:id', function(req, res){            
+    var dados = {
+      operacao: 'atualizar',      
+      where:{},
+      set:{$pull:{
+        comentarios:{
+          id_comentario: objectID(req.params.id)         
+        }
+      }},
       collection: 'postagens',
       callback: function(err, records){
         if (err) {
@@ -172,5 +176,5 @@ app.get('/api', function(req, res){
         }
       }
     }
-    connMongoDB(dados); */
+    connMongoDB(dados);
   });

@@ -57,7 +57,7 @@
 									 xhr.open('DELETE','http://localhost:8080/api/' + idComentario);									 							 
 									 xhr.onload = function(){
 										if(xhr.status === 200){
-											alert(xhr.responseText);
+											window.location.href = '/home'
 										}
 								 }
 								 xhr.send();
