@@ -38,7 +38,7 @@
 								 if(postagem.comentarios != undefined && postagem.comentarios.length > 0){									 
 									 postagem.comentarios.forEach(comentario => {										 
 										 $('#comentarios_' + postagem._id).append(
-											 '<div class="txt_comentario"> ' +
+											 '<div id="div_comentario_'+ comentario.id_comentario +'" class="txt_comentario"> ' +
 											'<button class="btn btn-default btn_remover_postagem" type="button" value="'+ comentario.id_comentario + '">X</button>'+
 											 comentario.comentario +
 											 '</div>'
@@ -56,8 +56,9 @@
 									 var xhr = new XMLHttpRequest();
 									 xhr.open('DELETE','http://localhost:8080/api/' + idComentario);									 							 
 									 xhr.onload = function(){
-										if(xhr.status === 200){
-											window.location.href = '/home'
+										if(xhr.status === 200){											
+											console.log($('#div_comentario_' + idComentario))
+											$('#div_comentario_' + idComentario).remove();
 										}
 								 }
 								 xhr.send();
@@ -73,7 +74,7 @@
 								 xhr.setRequestHeader('Content-Type','application/json');								 
 								 xhr.onload = function(){
 									 if(xhr.status === 200){
-										 window.location.href = 'home';
+										 window.location.href = '/home'
 									 }
 								 }
 								 xhr.send(JSON.stringify({comentario:comentario}));
