@@ -158,8 +158,9 @@ app.get('/api', function(req, res){
     connMongoDB(dados);
   });
 
-  app.delete('/api/:id', function(req, res){            
-    var dados = {
+  app.delete('/api/:id', function(req, res){    
+    res.send(req.params.id)
+    /* var dados = {
       operacao: 'remover',      
       where:{_id:objectID(req.params.id)},      
       collection: 'postagens',
@@ -171,5 +172,5 @@ app.get('/api', function(req, res){
         }
       }
     }
-    connMongoDB(dados);
+    connMongoDB(dados); */
   });

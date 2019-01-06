@@ -39,6 +39,7 @@
 									 postagem.comentarios.forEach(comentario => {										 
 										 $('#comentarios_' + postagem._id).append(
 											 '<div class="txt_comentario"> ' +
+											'<button class="btn btn-default btn_remover_postagem" type="button" value="'+ comentario.id_comentario + '">X</button>'+
 											 comentario.comentario +
 											 '</div>'
 										 );
@@ -50,6 +51,17 @@
 											 '</div>'
 										 );
 								 }
+								 $('.btn_remover_postagem').click(function(){
+									 var idComentario = this.value;
+									 var xhr = new XMLHttpRequest();
+									 xhr.open('DELETE','http://localhost:8080/api/' + idComentario);									 							 
+									 xhr.onload = function(){
+										if(xhr.status === 200){
+											alert(xhr.responseText);
+										}
+								 }
+								 xhr.send();
+								 });
 							 });
 							 $('.btn_postagem').click(function(){
 								
