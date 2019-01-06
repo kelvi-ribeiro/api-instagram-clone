@@ -28,12 +28,18 @@
 									'<span class="titulo">' +  postagem.titulo + '</span>' +
 									'<img src="http://localhost:8080/uploads/' + postagem.urlImagem + '" />'+
 									'<div class="comentar">' +
-										'<input type="text" class="form-control input_comentario" placeholder="Adicione um comentário"/>' +
-										'<button class="btn btn-default btn_postagem" type="button">Comentar</button>' +
+										'<input type="text" class="form-control input_comentario" id="postagem_'+ postagem._id +'" placeholder="Adicione um comentário"/>' +
+										'<button class="btn btn-default btn_postagem" value="'+ postagem._id +'" type="button">Comentar</button>' +
 										'</div>' +
 									'</div>'
 									
 								 );
+							 });
+							 $('.btn_postagem').click(function(){
+								 var idPostagem = this.value;	
+								 var idInputComentario = 'postagem_' +idPostagem;		
+								 var comentario = $('#' + idInputComentario).val();
+								 alert(comentario);
 							 });
 						 }
 					 }
