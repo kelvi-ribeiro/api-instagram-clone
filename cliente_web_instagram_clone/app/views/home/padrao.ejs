@@ -39,7 +39,9 @@
 								 var idPostagem = this.value;	
 								 var idInputComentario = 'postagem_' +idPostagem;		
 								 var comentario = $('#' + idInputComentario).val();
-								 alert(comentario);
+								 var xhr = new XMLHttpRequest();
+								 xhr.open('PUT','http://localhost:8080/api/' + idPostagem);
+								 xhr.send();
 							 });
 						 }
 					 }

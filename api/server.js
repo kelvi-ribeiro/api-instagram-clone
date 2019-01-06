@@ -128,8 +128,8 @@ app.get('/api', function(req, res){
   });
 
   app.put('/api/:id', function(req, res){    
-        
-    var dados = {
+    res.send('Rota para atualização');
+   /*  var dados = {
       operacao: 'atualizar',      
       where:{_id:objectID(req.params.id)},
       set:{$set:{titulo:req.body.titulo}},
@@ -142,7 +142,7 @@ app.get('/api', function(req, res){
         }
       }
     }
-    connMongoDB(dados);
+    connMongoDB(dados); */
   });
 
   app.delete('/api/:id', function(req, res){            
