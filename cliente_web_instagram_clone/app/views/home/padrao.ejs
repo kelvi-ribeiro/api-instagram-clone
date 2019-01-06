@@ -27,13 +27,29 @@
 								'<div class="publicacao">' + 
 									'<span class="titulo">' +  postagem.titulo + '</span>' +
 									'<img src="http://localhost:8080/uploads/' + postagem.urlImagem + '" />'+
-									'<div class="comentar">' +
+									'<div class="comentarios" id="comentarios_' + postagem._id + '" </div>' +
+									'<div class="comentar">' + 
 										'<input type="text" class="form-control input_comentario" id="postagem_'+ postagem._id +'" placeholder="Adicione um comentário"/>' +
 										'<button class="btn btn-default btn_postagem" value="'+ postagem._id +'" type="button">Comentar</button>' +
 										'</div>' +
 									'</div>'
 									
 								 );
+								 if(postagem.comentarios != undefined && postagem.comentarios.length > 0){									 
+									 postagem.comentarios.forEach(comentario => {										 
+										 $('#comentarios_' + postagem._id).append(
+											 '<div class="txt_comentario"> ' +
+											 comentario.comentario +
+											 '</div>'
+										 );
+									 });
+								 }else{
+									$('#comentarios_' + postagem._id).append(
+											 '<div class="txt_comentario"> ' +
+											'Sem comentários, seja o primeira a comentar' + 
+											 '</div>'
+										 );
+								 }
 							 });
 							 $('.btn_postagem').click(function(){
 								
