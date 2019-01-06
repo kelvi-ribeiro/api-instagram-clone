@@ -136,12 +136,16 @@ app.get('/api', function(req, res){
       });
   });
 
-  app.put('/api/:id', function(req, res){    
-    res.send(req.body.comentario);
-   /*  var dados = {
+  app.put('/api/:id', function(req, res){        
+    var dados = {
       operacao: 'atualizar',      
       where:{_id:objectID(req.params.id)},
-      set:{$set:{titulo:req.body.titulo}},
+      set:{$push:{
+        comentarios:{
+          id_comentario: new objectID(),
+          comentario:req.body.comentario
+        }
+      }},
       collection: 'postagens',
       callback: function(err, records){
         if (err) {
@@ -151,7 +155,7 @@ app.get('/api', function(req, res){
         }
       }
     }
-    connMongoDB(dados); */
+    connMongoDB(dados);
   });
 
   app.delete('/api/:id', function(req, res){            
