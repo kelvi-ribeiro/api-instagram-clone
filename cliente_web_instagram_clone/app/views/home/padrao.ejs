@@ -36,12 +36,17 @@
 								 );
 							 });
 							 $('.btn_postagem').click(function(){
+								
 								 var idPostagem = this.value;	
 								 var idInputComentario = 'postagem_' +idPostagem;		
 								 var comentario = $('#' + idInputComentario).val();
 								 var xhr = new XMLHttpRequest();
 								 xhr.open('PUT','http://localhost:8080/api/' + idPostagem);
-								 xhr.send();
+								 xhr.setRequestHeader('Content-Type','application/json');								 
+								 xhr.onload = function(){
+									 alert(xhr.responseText)
+								 }
+								 xhr.send(JSON.stringify({comentario:comentario}));
 							 });
 						 }
 					 }
@@ -68,7 +73,7 @@
 				formData.append('titulo', titulo);
 
 				var xhr = new XMLHttpRequest();
-
+				
 				xhr.onreadystatechange = function(){
 					if(xhr.readyState === 4){
 						var response = xhr.responseText;
@@ -78,7 +83,9 @@
 						loadPostagens();
 					}
 				}
-				
+				xhr.onprogress = function(evt){
+					console.log((evt.loaded / evt.total) * 100);
+				}
 				xhr.open('POST','http://localhost:8080/api');
 				xhr.send(formData);
 

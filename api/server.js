@@ -10,6 +10,15 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(multiParty());
+
+app.use(function(req,res,next){
+  res.setHeader("Access-Control-Allow-Origin","*");
+  res.setHeader("Access-Control-Allow-Methods","GET,POST,PUT,DELETE");
+  res.setHeader("Access-Control-Allow-Headers","content-type");
+  res.setHeader("Access-Control-Allow-Credentials",true);
+  next();
+
+});
  
 var port = 8080;
  
@@ -51,7 +60,7 @@ app.get('/', function(req, res){
 });
  
 app.post('/api', function(req, res){
-  res.setHeader("Access-Control-Allow-Origin","*");
+  
   var date = new Date();
   var timeStamp = date.getTime();
   
@@ -84,7 +93,7 @@ app.post('/api', function(req, res){
 });
 
 app.get('/api', function(req, res){    
-    res.setHeader("Access-Control-Allow-Origin","*");
+    
     var dados = {
       operacao: 'pesquisar',      
       collection: 'postagens',
@@ -128,7 +137,7 @@ app.get('/api', function(req, res){
   });
 
   app.put('/api/:id', function(req, res){    
-    res.send('Rota para atualização');
+    res.send(req.body.comentario);
    /*  var dados = {
       operacao: 'atualizar',      
       where:{_id:objectID(req.params.id)},
