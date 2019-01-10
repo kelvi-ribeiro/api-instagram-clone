@@ -19,7 +19,9 @@ app.use(function(req,res,next){
 });
 
 consign()	
-	.include('api/config/dbConnection.js')		
+    .include('api/app/routes')	
+    .then('api/app/controllers')	
+    .then('api/config/dbConnection.js')	
     .into(app);
     
     module.exports = app;
