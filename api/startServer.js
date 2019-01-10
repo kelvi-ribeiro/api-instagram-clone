@@ -1,74 +1,26 @@
-var express = require('express'),
-    bodyParser = require('body-parser'),
-    multiParty = require('connect-multiparty'),
-    mongodb = require('mongodb').MongoClient,
-    objectID = require('mongodb').ObjectId,
-    fs = require('fs');
- 
-var app = express();
- 
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-app.use(multiParty());
+var objectID = require('mongodb').ObjectId,
+fs = require('fs');
 
-app.use(function(req,res,next){
-  res.setHeader("Access-Control-Allow-Origin","*");
-  res.setHeader("Access-Control-Allow-Methods","GET,POST,PUT,DELETE");
-  res.setHeader("Access-Control-Allow-Headers","content-type");
-  res.setHeader("Access-Control-Allow-Credentials",true);
-  next();
+/* importar as configurações do servidor */
+var app = require('./config/server');
 
-});
- 
-var port = 8080;
- 
-app.listen(port);
- 
-var dbName = 'instagram';
-var mongoURL = 'mongodb://localhost:27017/' + dbName;
- 
-var connMongoDB = function(data) {
-  mongodb.connect(mongoURL, { useNewUrlParser: true }, function(err, client) {
-    var db = client.db(dbName);
-    query(db, data);
-    client.close();
-  });
-}
- 
-function query(db, data) {
-  var collection = db.collection(data.collection);
-  switch (data.operacao) {
-    case 'atualizar':
-      collection.update(data.where, data.set,{},data.callback);
-      break;
-    case 'inserir':
-      collection.insertOne(data.dados, data.callback);
-      break;
-    case 'pesquisar':          
-      collection.find(data.dados).toArray(data.callback);
-      break;
-    case 'remover':      
-      collection.remove(data.where, data.callback);
-      break;
-  }
-}
- 
-console.log('Servidor HTTP escutando na porta ' + port);
- 
+/* parametrizar a porta de escuta */
+app.listen(8080, function(){
+	console.log('Servidor online');
+})
 app.get('/', function(req, res){
   res.send({msg: 'Olá'});
 });
  
-app.post('/api', function(req, res){
-  
-  var date = new Date();
-  var timeStamp = date.getTime();
-  
+app.post('/api', function(req, res){  
+  var date = new Date(); 
+  var timeStamp = date.getTime();  
   var urlImagem = timeStamp + '_' + req.files.arquivo.originalFilename; 
   var pathOrigem = req.files.arquivo.path;
   var pathDestino = './uploads/' + urlImagem; 
   fs.rename(pathOrigem,pathDestino,function(err){
     if(err){
+      console.log(err)
       res.status(500).json(err);
       return;
     }
@@ -88,7 +40,7 @@ app.post('/api', function(req, res){
         }
       }
     }
-    connMongoDB(dados);
+    app.api.config.dbConnection(dados);
     });
 });
 
@@ -105,7 +57,7 @@ app.get('/api', function(req, res){
         }
       }
     }
-    connMongoDB(dados);
+    app.api.config.dbConnection(dados);
   });
 
   app.get('/api/:id', function(req, res){        
@@ -121,7 +73,7 @@ app.get('/api', function(req, res){
         }
       }
     }
-    connMongoDB(dados);
+    app.api.config.dbConnection(dados);
   });
 
   app.get('/uploads/:urlImagem', function(req, res){        
@@ -155,7 +107,7 @@ app.get('/api', function(req, res){
         }
       }
     }
-    connMongoDB(dados);
+    app.api.config.dbConnection(dados);
   });
 
   app.delete('/api/:id', function(req, res){            
@@ -176,5 +128,5 @@ app.get('/api', function(req, res){
         }
       }
     }
-    connMongoDB(dados);
+    app.api.config.dbConnection(dados);
   });
